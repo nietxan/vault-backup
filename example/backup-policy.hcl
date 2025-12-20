@@ -1,3 +1,3 @@
 path "sys/storage/raft/snapshot" {
-  capabilities = ["sudo"]
+  capabilities = ["read", "create", "update", "sudo"]
 }

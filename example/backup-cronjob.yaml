@@ -6,6 +6,8 @@ metadata:
 spec:
   schedule: "0 2 * * *"
   concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 5
   jobTemplate:
     spec:
       template:
@@ -23,7 +25,8 @@ spec:
               value: "http://vault-active.vault.svc.cluster.local:8200"
             - name: S3_BUCKET
               value: "vault-backups-bucket"
-            command: ["source /scripts/backup.sh"]
+            command: ["/bin/sh", "-c"]
+            args: ["source /scripts/backup.sh"]
             resources:
               requests:
                 cpu: "100m"
