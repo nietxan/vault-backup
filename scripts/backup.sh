@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -xe
+set -e
 
 echo "Authenticating to Vault via AWS IAM..."
 LOGIN_JSON=$(vault login -method=aws \
