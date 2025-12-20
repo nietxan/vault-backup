@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: vault-restore
+  namespace: vault
+spec:
+  template:
+    spec:
+      serviceAccountName: vault
+      restartPolicy: OnFailure
+      containers:
+      - name: vault-restore
+        image: nietxan/vault-backup:latest
+        securityContext:
+          capabilities:
+            add: ["IPC_LOCK"]
+        env:
+        - name: VAULT_ADDR
+          value: "http://vault-active.vault.svc.cluster.local:8200"
+        - name: S3_BUCKET
+          value: "vault-backups-bucket"
+        command: ["source /scripts/restore.sh"]
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "512Mi"
+            ephemeral-storage: "1024Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
+            ephemeral-storage: "2048Mi"
+        volumeMounts:
+          - name: tmp
+            mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: "2048Mi"
