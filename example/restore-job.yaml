@@ -10,7 +10,7 @@ spec:
       restartPolicy: OnFailure
       containers:
       - name: vault-restore
-        image: nietxan/vault-backup:latest
+        image: ghcr.io/nietxan/vault-backup:latest
         securityContext:
           capabilities:
             add: ["IPC_LOCK"]
